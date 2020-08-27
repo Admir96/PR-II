@@ -227,32 +227,31 @@ public:
 		}
 		return false;
 	}
-	ZavrsniRad* ZakaziOdbranuRada(string index,string datumOdbrane)
+	ZavrsniRad* ZakaziOdbranuRada(string index, string datumOdbrane)
 	{
 		float konacnaOcjena = 0;
 		int brojac = 0;
+		ZavrsniRad* temp = nullptr;
 		for (size_t i = 0; i < _teme.getTrenutno(); i++)
 		{
 			if (_teme.getElement1(i) == index)
 			{
-				if (_teme.getElement2(i).GetPoglavlja().size() >= min_polgavlja)
+				temp = new ZavrsniRad;
+				temp = &_teme.getElement2(i);
+				if (temp->GetPoglavlja().size() >= min_polgavlja)
 				{
-					for (vector<Poglavlje>::iterator j = _teme.getElement2(i).GetPoglavlja().begin(); j != _teme.getElement2(i).GetPoglavlja().end(); j++)
+					for (vector<Poglavlje>::iterator j = temp->GetPoglavlja().begin(); j != temp->GetPoglavlja().end(); j++)
 					{
 						if (strlen(j->GetSadrzaj()) >= min_karaktera_po_poglavlju && j->GetPrihvaceno() == true)
-						{
 							konacnaOcjena += j->GetOcjena();
-						}
 					}
 				}
 				konacnaOcjena /= _teme.getElement2(i).GetPoglavlja().size();
-				_teme.getElement2(i).SetDatumOdbrane(datumOdbrane);
-				_teme.getElement2(i).SetKonacnaOcjena(konacnaOcjena);
-				return &_teme.getElement2(i);
+				temp->SetDatumOdbrane(datumOdbrane);
+				temp->SetKonacnaOcjena(konacnaOcjena);
 			}
 		}
-	
-	return nullptr;
+		return temp;
 	}
 
 	void Info() { cout << this << endl; }
